@@ -1,0 +1,193 @@
+openapi: '3.0.2'
+info:
+  title: API Title
+  version: '1.0'
+servers:
+  - url: http://localhost:8080
+
+components:
+  schemas:
+    TodoList:
+      type: object
+      properties:
+        count:
+          type: integer
+          description: Number of todos
+        todos:
+          type: array
+          items:
+            $ref: "#/components/schemas/Todo"
+            
+    Todo:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID of the todo
+        title:
+          type: string
+          description: Title of the todo
+        creationDate:
+          type: integer
+          description: Creation date of the todo
+        dueDate:
+          type: integer
+          description: Due date of the todo
+        done:
+          type: boolean
+          description: Is the todo done or not
+
+    NewTodo:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Title of the todo
+        creationDate:
+          type: integer
+          description: Creation date of the todo
+        dueDate:
+          type: integer
+          description: Due date of the todo
+        done:
+          type: boolean
+          description: Is the todo done or not
+
+paths:
+  /todos:
+    get:
+      description: >
+        Get all todos. Can be filtered using query parameters
+      parameters:
+        - in: query
+          required: false
+          name: limit
+          schema:
+            type: integer
+            description: Maximum number of todos to return, default is 100
+        - in: query
+          required: false
+          name: status
+          schema:
+            type: string
+            enum: ['done', 'todo', 'all']
+            description: Type of the todos to return, default is all
+      responses:
+        "200":
+          description: >
+            Success. The list of the tasks is returned
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TodoList"
+        "400":
+          description: >
+            Bad request
+        "404":
+          description: >
+            No todos found
+        "500":
+          description: >
+            Internal server error
+    post:
+      description: >
+        Create a new todo
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewTodo"
+      responses:
+        "201":
+          description: >
+            Created. The todo is sent back to get ID of
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Todo"
+        "403":
+          description: >
+            Cannot create a todo (forbidden). This should not happen on this version of API, just
+            to make it future-prone
+        "400":
+          description: >
+            Bad request
+        "500":
+          description: >
+            Internal server error
+
+  /todos/{todoId}:
+    get:
+      description: >
+        Get a todo's information
+      parameters:
+        - in: path
+          required: true
+          name: todoId
+          schema:
+            type: integer
+            description: ID of the todo to get
+      responses:
+        "200":
+          description: >
+            Sucess. Todo data is sent back
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Todo"
+        "404":
+          description: >
+            Requested todo was not found
+        "500":
+          description: >
+            Internal server error
+
+    put:
+      description: >
+        Update a todo
+      parameters:
+        - in: path
+          required: true
+          name: todoId
+          schema:
+            type: integer
+            description: ID of the todo to update
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Todo"
+      responses:
+        "204":
+          description: >
+            No content. Todo updated successfully
+        "400":
+          description: >
+            Bad request, maybe tried to update the ID?!
+        "404":
+          description: >
+            Requested todo not found
+        "500":
+          description: >
+            Internal server error
+
+    delete:
+      description: >
+        Delete a todo
+      parameters:
+        - in: path
+          required: true
+          name: todoId
+          schema:
+            type: integer
+            description: ID of the todo to update
+      responses:
+        "204":
+          description: >
+            No content, todo deleted successfully.
+        "404":
+          description: >
+            Todo not found
+        "500":
+          description: >
+            Internal server error
