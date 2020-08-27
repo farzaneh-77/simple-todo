@@ -1,0 +1,19 @@
+{
+  "name": "simple-todo",
+  "version": "1.0.0",
+  "description": "\"# simple-todo\"",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/farzaneh-77/simple-todo.git"
+  },
+  "author": "Farzaneh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/farzaneh-77/simple-todo/issues"
+  },
+  "homepage": "https://github.com/farzaneh-77/simple-todo#readme"
+}
