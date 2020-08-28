@@ -27,10 +27,10 @@ components:
         title:
           type: string
           description: Title of the todo
-        creationDate:
+        creation_date:
           type: integer
           description: Creation date of the todo
-        dueDate:
+        due_date:
           type: integer
           description: Due date of the todo
         done:
@@ -43,15 +43,40 @@ components:
         title:
           type: string
           description: Title of the todo
-        creationDate:
-          type: integer
-          description: Creation date of the todo
-        dueDate:
+        due_date:
           type: integer
           description: Due date of the todo
         done:
           type: boolean
           description: Is the todo done or not
+
+    TodoUpdate:
+      type: object
+      properties:
+        title:
+          type: object
+          properties:
+            action:
+              type: string
+              enum: ['DROP', 'UPDATE']
+            value:
+              type: string
+        due_date:
+          type: object
+          properties:
+            action:
+              type: string
+              enum: ['DROP', 'UPDATE']
+            value:
+              type: integer
+        done:
+          type: object
+          properties:
+            action:
+              type: string
+              enum: ['DROP', 'UPDATE']
+            value:
+              type: boolean
 
 paths:
   /todos:
@@ -70,7 +95,7 @@ paths:
           name: status
           schema:
             type: string
-            enum: ['done', 'todo', 'all']
+            enum: ['DONE', 'TODO', 'ALL']
             description: Type of the todos to return, default is all
       responses:
         "200":
@@ -116,14 +141,14 @@ paths:
           description: >
             Internal server error
 
-  /todos/{todoId}:
+  /todos/{todo_id}:
     get:
       description: >
         Get a todo's information
       parameters:
         - in: path
           required: true
-          name: todoId
+          name: todo_id
           schema:
             type: integer
             description: ID of the todo to get
@@ -148,7 +173,7 @@ paths:
       parameters:
         - in: path
           required: true
-          name: todoId
+          name: todo_id
           schema:
             type: integer
             description: ID of the todo to update
@@ -156,7 +181,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Todo"
+              $ref: "#/components/schemas/TodoUpdate"
       responses:
         "204":
           description: >
@@ -177,7 +202,7 @@ paths:
       parameters:
         - in: path
           required: true
-          name: todoId
+          name: todo_id
           schema:
             type: integer
             description: ID of the todo to update
