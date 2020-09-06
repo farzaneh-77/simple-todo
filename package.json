@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/farzaneh-77/simple-todo/issues"
   },
-  "homepage": "https://github.com/farzaneh-77/simple-todo#readme"
+  "homepage": "https://github.com/farzaneh-77/simple-todo#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1"
+  }
 }
